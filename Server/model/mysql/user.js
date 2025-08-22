@@ -9,7 +9,7 @@ export class UserModel {
         return result;
     }
 
-    static async create(input){
+    static async register(input){
         try {
             const query = 'INSERT INTO users(name, lastname, email, password) VALUES(?, ?, ?, ?)';
             const hashPass = await bcrypt.hash(input.password, SALTROUNDS);
@@ -25,6 +25,18 @@ export class UserModel {
             }
              console.error('Error al insertar el usuario:', error);
             throw error;   
+        }
+    }
+    static async login(input){
+        try {
+            const query = 'SELECT id, password FROM users WHERE email = ?';
+            const values = [input.email];
+            const result = await connection.query(query, values);
+            //Forma de extraer los valores
+            return result[0][0];
+        } catch (error) {
+            console.log('Error en el login: ',error)
+            throw error;
         }
     }
 }
