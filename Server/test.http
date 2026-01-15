@@ -16,10 +16,114 @@ POST http://localhost:1234/user/login
 Content-Type: application/json
 
 {
-    "email": "e@gmail.com",
+    "email": "j@gmail.com",
     "password": "12345"
 }
 ###
 GET http://localhost:1234/user/verify
 ###
 GET http://localhost:1234/user/logout
+
+###
+
+POST http://localhost:1234/inventary/createProduct
+Content-Type: application/json
+
+{
+    "reference": "ABC-123",
+    "id_category": "1",
+    "id_provider": "1",
+    "name": "Teclado de gamma baja",
+    "description": "Producto Ergonomico",
+    "price": "12",
+    "acount": "100"
+}
+###
+GET http://localhost:1234/inventary/getid
+###
+GET http://localhost:1234/inventary/getProduct
+###
+GET http://localhost:1234/provider/get
+###
+POST http://localhost:1234/inventary/createCategory
+Content-Type: application/json
+
+{
+    "name": "Electrodomesticos",
+    "description": "Producto del hogar y la cocina"
+}
+###
+GET http://localhost:1234/inventary/getCategory
+###
+DELETE http://localhost:1234/inventary/deleteCategory/2
+###
+PUT http://localhost:1234/inventary/stateCategory/3
+###
+PUT http://localhost:1234/inventary/updateCategory/3
+Content-Type: application/json
+
+{
+    "name":"Eleectrodomesticos y mas",
+    "description":"Productos del hogar, cocina y otros"
+}
+###
+PUT http://localhost:1234/inventary/updateProduct/16
+Content-Type: application/json
+
+{
+
+    "reference": "ABC-123",
+    "id_category": "1",
+    "id_provider": "1",
+    "name": "Teclado de gamma Alta",
+    "description": "Producto Ergonomico",
+    "price": "120000",
+    "acount": "100"
+}
+###
+DELETE http://localhost:1234/inventary/_test_delete/2
+###
+GET http://localhost:1234/purchase/get
+###
+POST http://localhost:1234/purchase/register
+Content-Type: application/json
+
+{
+    "id_provider":"1",
+    "id_product":"7",
+    "quantity":"10",
+    "unit_price":"15",
+    "cost":"150"
+}
+###
+PUT http://localhost:1234/purchase/update/6
+Content-Type: application/json
+
+{
+
+    "id_provider": "3",
+    "quantity": "100",
+    "id_product": "7",
+    "unit_cost": "20000",
+    "acount": "100"
+}
+###
+DELETE http://localhost:1234/purchase/delete/5
+###
+POST http://localhost:1234/inventary/getByReference
+Content-Type: application/json
+
+{
+}
+###
+POST http://localhost:1234/purchase/createGroup
+Content-Type: application/json
+
+{
+    "group_name": "Compra de tecnologia",
+    "description": "Compra de varios dispositivos tecnologicos",
+    "subtotal": "150000",
+    "total_tax_amount": "28500"
+}
+###
+GET http://localhost:1234/purchase/getGroup

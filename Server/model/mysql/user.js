@@ -15,7 +15,6 @@ export class UserModel {
             const hashPass = await bcrypt.hash(input.password, SALTROUNDS);
             const values = [input.name, input.lastname, input.email, hashPass];
             const result = await connection.query(query, values);
-
             return result;        
         } catch (error) {
             // Verifica si el error es de tipo duplicado (código de error 1062 en MySQL)

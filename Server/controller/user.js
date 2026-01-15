@@ -5,10 +5,15 @@ import bcrypt from 'bcrypt';
 import { KEY_JWT } from '../config.js';
 
 export class UserController {
-    // static async getAll(req, res){
-    //     const users = await UserModel.getAll();
-    //     res.json(users);
-    // }
+    static getID(req, res){
+        if(!req.user || !req.user.id){
+            console.log("Usuario no identificado");
+            return;
+        }
+        const userID = req.user.id;
+        console.log(userID);
+    }
+
     static async register(req, res){
         try {
             const validation = userSchema.safeParse(req.body);
@@ -54,7 +59,6 @@ export class UserController {
                     sameSite: 'lax' // 'lax' es una buena opción para desarrollo
                 };
                 res.cookie('access_token', token, cookieOptions);
-                //.send({token});
                 return res.status(200).json({message: 'Usuario Encontrado Exitosamente'}); 
             }
             return res.status(401).json({message:'Usuario Invalido'}); //Unauthorized 401
@@ -84,11 +88,22 @@ export class UserController {
         if(!token) return res.status(401).json({message: 'Falta Iniciar Sección'});
         try {
             const decode = jwt.verify(token, KEY_JWT);
-            req.user = decode;
+            req.user = { id: decode.id };
+            if(req.user){
+                res.status(200).json({
+                    message: 'Acceso autorizado',
+                    user: req.user
+                })
+            }
             next();
         } catch (error) {
-            console.log('Error en el verify: ',error);
-            return res.status(401).json({message: 'Token Invalido'});
+            if (error.name === 'TokenExpiredError') {
+                console.log('Error en el verify: ',error);
+                return res.status(401).json({ message: 'Token ha expirado. Por favor, vuelve a iniciar sesión.' });
+            } else {
+                console.log('Error en el verify: ',error);
+                return res.status(401).json({ message: 'Token inválido.' });
+            }
         }
     }
 
